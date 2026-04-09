@@ -85,3 +85,17 @@ Migrating to ChangeJtiOnUsersToNotNullAndUnique (20260409105736)
   [1m[36mTRANSACTION (1.0ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
   [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(2703814818277871445) /*application='Backend'*/[0m
   [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Backend'*/[0m
+[dotenv] Set [36mDB_USERNAME[0m, [36mDB_PASSWORD[0m, [36mDEVISE_JWT_SECRET_KEY[0m
+[dotenv] Loaded [33m.env[0m
+[dotenv] Set [36mDB_USERNAME[0m, [36mDB_PASSWORD[0m, [36mDEVISE_JWT_SECRET_KEY[0m
+[dotenv] Loaded [33m.env[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_try_advisory_lock(2703814818277871445) /*application='Backend'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (1.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Backend'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.6ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Backend'*/[0m
+Migrating to CreateEmployees (20260409112728)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[35m (6.8ms)[0m  [1m[35mCREATE TABLE "employees" ("id" bigserial primary key, "first_name" character varying, "last_name" character varying, "email" character varying, "country" character varying, "job_title" character varying, "salary" decimal, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL) /*application='Backend'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260409112728') RETURNING "version" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (1.3ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(2703814818277871445) /*application='Backend'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Backend'*/[0m

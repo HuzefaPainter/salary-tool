@@ -7,3 +7,4 @@ backend/config/credentials.yml.enc
 # Heavy/useless folders
 frontend/node_modules/
 backend/tmp/
+backend/log/

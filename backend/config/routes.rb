@@ -11,5 +11,5 @@ Rails.application.routes.draw do
       registrations: "users/registrations"
     }
 
-  get '/health', to: 'health#index'
+  get "/health", to: "health#index"
 end
