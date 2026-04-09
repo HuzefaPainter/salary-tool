@@ -1,25 +1,19 @@
-// src/pages/login_pages/__tests__/LoginPage.test.jsx
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Routes, Route } from 'react-router-dom'
 import LoginPage from '@/pages/login_pages/LoginPage'
+import { typeInField, clickButton, expectToSeeText } from '@/test/FormHelpers'
 
 const mockLogin = vi.fn()
 const mockNavigate = vi.fn()
 
 vi.mock('@/contexts/AuthContext', () => ({
-  useAuth: () => ({
-    login: mockLogin
-  })
+  useAuth: () => ({ login: mockLogin })
 }))
 
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom')
-  return {
-    ...actual,
-    useNavigate: () => mockNavigate
-  }
+  return { ...actual, useNavigate: () => mockNavigate }
 })
 
 function renderLoginPage() {
@@ -33,16 +27,19 @@ function renderLoginPage() {
   )
 }
 
+const fillLoginForm = async (email = 'john@example.com', password = 'password123') => {
+  await typeInField(/email/i, email)
+  await typeInField(/^password$/i, password)
+}
+
 describe('LoginPage', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-  })
+  beforeEach(() => vi.clearAllMocks())
 
   describe('rendering', () => {
     it('renders email and password fields', () => {
       renderLoginPage()
       expect(screen.getByLabelText(/email/i)).toBeInTheDocument()
-      expect(screen.getByLabelText(/password/i)).toBeInTheDocument()
+      expect(screen.getByLabelText(/^password$/i)).toBeInTheDocument()
     })
 
     it('renders a submit button', () => {
@@ -59,21 +56,21 @@ describe('LoginPage', () => {
   describe('validation', () => {
     it('shows error when email is empty', async () => {
       renderLoginPage()
-      await userEvent.click(screen.getByRole('button', { name: /login/i }))
-      expect(await screen.findByText(/email is required/i)).toBeInTheDocument()
+      await clickButton(/login/i)
+      await expectToSeeText(/email is required/i)
     })
 
     it('shows error when password is empty', async () => {
       renderLoginPage()
-      await userEvent.click(screen.getByRole('button', { name: /login/i }))
-      expect(await screen.findByText(/password is required/i)).toBeInTheDocument()
+      await clickButton(/login/i)
+      await expectToSeeText(/password is required/i)
     })
 
     it('shows error when email is invalid', async () => {
       renderLoginPage()
-      await userEvent.type(screen.getByLabelText(/email/i), 'notanemail')
-      await userEvent.click(screen.getByRole('button', { name: /login/i }))
-      expect(await screen.findByText(/invalid email/i)).toBeInTheDocument()
+      await typeInField(/email/i, 'notanemail')
+      await clickButton(/login/i)
+      await expectToSeeText(/invalid email/i)
     })
   })
 
@@ -81,11 +78,8 @@ describe('LoginPage', () => {
     it('calls login with correct credentials', async () => {
       mockLogin.mockResolvedValue({})
       renderLoginPage()
-
-      await userEvent.type(screen.getByLabelText(/email/i), 'john@example.com')
-      await userEvent.type(screen.getByLabelText(/password/i), 'password123')
-      await userEvent.click(screen.getByRole('button', { name: /login/i }))
-
+      await fillLoginForm()
+      await clickButton(/login/i)
       await waitFor(() => {
         expect(mockLogin).toHaveBeenCalledWith('john@example.com', 'password123')
       })
@@ -94,11 +88,8 @@ describe('LoginPage', () => {
     it('redirects to /employees on successful login', async () => {
       mockLogin.mockResolvedValue({})
       renderLoginPage()
-
-      await userEvent.type(screen.getByLabelText(/email/i), 'john@example.com')
-      await userEvent.type(screen.getByLabelText(/password/i), 'password123')
-      await userEvent.click(screen.getByRole('button', { name: /login/i }))
-
+      await fillLoginForm()
+      await clickButton(/login/i)
       await waitFor(() => {
         expect(mockNavigate).toHaveBeenCalledWith('/employees')
       })
@@ -108,24 +99,17 @@ describe('LoginPage', () => {
       const error = new Error('Invalid credentials')
       error.response = { status: 401 }
       mockLogin.mockRejectedValue(error)
-
       renderLoginPage()
-
-      await userEvent.type(screen.getByLabelText(/email/i), 'john@example.com')
-      await userEvent.type(screen.getByLabelText(/password/i), 'wrongpassword')
-      await userEvent.click(screen.getByRole('button', { name: /login/i }))
-
-      expect(await screen.findByText(/invalid email or password/i)).toBeInTheDocument()
+      await fillLoginForm('john@example.com', 'wrongpassword')
+      await clickButton(/login/i)
+      await expectToSeeText(/invalid email or password/i)
     })
 
     it('disables submit button while logging in', async () => {
       mockLogin.mockImplementation(() => new Promise(resolve => setTimeout(resolve, 100)))
       renderLoginPage()
-
-      await userEvent.type(screen.getByLabelText(/email/i), 'john@example.com')
-      await userEvent.type(screen.getByLabelText(/password/i), 'password123')
-      await userEvent.click(screen.getByRole('button', { name: /login/i }))
-
+      await fillLoginForm()
+      await clickButton(/login/i)
       expect(screen.getByRole('button', { name: /logging in/i })).toBeDisabled()
     })
   })
