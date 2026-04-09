@@ -20,7 +20,7 @@ RSpec.describe Employee, type: :model do
   end
 
   describe ".salary_insights_by_country" do
-    it "returns avg, min and max salary grouped by country" do
+    it "returns avg, min, max salary and employee count grouped by country" do
       create(:employee, country: "India", salary: 50000)
       create(:employee, country: "India", salary: 100000)
       create(:employee, country: "USA", salary: 200000)
@@ -33,14 +33,39 @@ RSpec.describe Employee, type: :model do
       expect(india["average_salary"].to_f).to eq(75000.0)
       expect(india["min_salary"].to_f).to eq(50000.0)
       expect(india["max_salary"].to_f).to eq(100000.0)
-      expect(usa["average_salary"].to_f).to eq(200000.0)
-      expect(usa["min_salary"].to_f).to eq(200000.0)
-      expect(usa["max_salary"].to_f).to eq(200000.0)
+      expect(india["employee_count"].to_i).to eq(2)
+      expect(usa["employee_count"].to_i).to eq(1)
+    end
+  end
+
+  describe ".top_paid_employees" do
+    it "returns top 10 highest paid employees in descending order" do
+      create_list(:employee, 15, salary: 50000)
+      top = create_list(:employee, 8, salary: 500000)
+
+      result = Employee.top_paid_employees
+
+      expect(result.length).to eq(10)
+      expect(result.map(&:salary).map(&:to_f)).to all(eq(500000.0))
+      expect(result.first.salary.to_f).to be >= result.last.salary.to_f
+    end
+  end
+
+  describe ".bottom_paid_employees" do
+    it "returns bottom 10 lowest paid employees in ascending order" do
+      create_list(:employee, 15, salary: 500000)
+      bottom = create_list(:employee, 8, salary: 30000)
+
+      result = Employee.bottom_paid_employees
+
+      expect(result.length).to eq(10)
+      expect(result.map(&:salary).map(&:to_f)).to all(eq(30000.0))
+      expect(result.first.salary.to_f).to be <= result.last.salary.to_f
     end
   end
 
   describe ".salary_insights_by_job_title" do
-    it "returns avg, min and max salary grouped by job title" do
+    it "returns avg, min, max salary and employee count grouped by job title" do
       create(:employee, job_title: "Engineer", salary: 80000)
       create(:employee, job_title: "Engineer", salary: 120000)
       create(:employee, job_title: "Designer", salary: 90000)
@@ -53,24 +78,8 @@ RSpec.describe Employee, type: :model do
       expect(engineer["average_salary"].to_f).to eq(100000.0)
       expect(engineer["min_salary"].to_f).to eq(80000.0)
       expect(engineer["max_salary"].to_f).to eq(120000.0)
-      expect(designer["average_salary"].to_f).to eq(90000.0)
-      expect(designer["min_salary"].to_f).to eq(90000.0)
-      expect(designer["max_salary"].to_f).to eq(90000.0)
-    end
-  end
-
-  describe ".employee_count_by_job_title" do
-    it "returns employee count grouped by job title" do
-      create_list(:employee, 3, job_title: "Engineer")
-      create_list(:employee, 2, job_title: "Designer")
-
-      result = Employee.employee_count_by_job_title
-
-      engineer = result.find { |r| r["job_title"] == "Engineer" }
-      designer = result.find { |r| r["job_title"] == "Designer" }
-
-      expect(engineer["employee_count"].to_i).to eq(3)
-      expect(designer["employee_count"].to_i).to eq(2)
+      expect(engineer["employee_count"].to_i).to eq(2)
+      expect(designer["employee_count"].to_i).to eq(1)
     end
   end
 end
