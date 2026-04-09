@@ -17,6 +17,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
+import BackButton from '@/components/BackButton'
 
 export default function EmployeeDetailPage() {
   const { id } = useParams()
@@ -62,9 +63,11 @@ export default function EmployeeDetailPage() {
 
         {error && <p className="text-destructive">{error}</p>}
 
+        <BackButton to="/employees" label="Back to Employees" />
+
         {!loading && !error && employee && (
           <>
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-6 mt-2">
               <h1 className="text-2xl font-semibold">
                 {employee.first_name} {employee.last_name}
               </h1>

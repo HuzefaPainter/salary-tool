@@ -8,7 +8,8 @@ import {
   typeInField,
   expectToSeeTextSync,
   waitForElement,
-  expectFieldToHaveValue
+  expectFieldToHaveValue,
+  expectLinkToPointTo
 } from '@/test/FormHelpers'
 
 vi.mock('@/contexts/AuthContext', () => ({
@@ -58,6 +59,13 @@ describe('EmployeeEditPage', () => {
     it('renders the page title', async () => {
       renderEmployeeEditPage()
       await waitForElement(() => expectToSeeTextSync(/edit employee/i))
+    })
+
+    it('renders back to employee link', async () => {
+      renderEmployeeEditPage()
+      await waitForElement(() => {
+        expectLinkToPointTo(/back to employee/i, '/employees/1')
+      })
     })
 
     it('prefills form with existing employee data', async () => {

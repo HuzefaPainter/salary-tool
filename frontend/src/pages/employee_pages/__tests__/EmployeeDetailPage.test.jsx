@@ -69,6 +69,13 @@ describe('EmployeeDetailPage', () => {
       })
     })
 
+    it('renders back to employees link', async () => {
+      renderEmployeeDetailPage()
+      await waitForElement(() => {
+        expectLinkToPointTo(/back to employees/i, '/employees')
+      })
+    })
+
     it('renders N/A for missing fields', async () => {
       employeeService.getEmployee.mockResolvedValue({
         data: { id: 1, first_name: 'Alice', last_name: null, email: null, country: null, job_title: null, salary: null }

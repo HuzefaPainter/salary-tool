@@ -3,6 +3,7 @@ import { createEmployee } from '@/api/services/employeeService'
 import { toast } from 'sonner'
 import Navbar from '@/components/Navbar'
 import EmployeeForm from '@/components/EmployeeForm'
+import BackButton from '@/components/BackButton'
 
 export default function EmployeeNewPage() {
   const navigate = useNavigate()
@@ -17,7 +18,8 @@ export default function EmployeeNewPage() {
     <div className="min-h-screen bg-background">
       <Navbar />
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-2xl font-semibold mb-6">Add Employee Form</h1>
+        <BackButton to="/employees" label="Back to Employees" />
+        <h1 className="text-2xl font-semibold mb-6 mt-2">Add Employee Form</h1>
         <EmployeeForm
           onSubmit={handleSubmit}
           submitLabel="Save"

@@ -4,6 +4,7 @@ import { getEmployee, updateEmployee } from '@/api/services/employeeService'
 import { toast } from 'sonner'
 import Navbar from '@/components/Navbar'
 import EmployeeForm from '@/components/EmployeeForm'
+import BackButton from '@/components/BackButton'
 
 export default function EmployeeEditPage() {
   const { id } = useParams()
@@ -42,9 +43,11 @@ export default function EmployeeEditPage() {
 
         {error && <p className="text-destructive">{error}</p>}
 
+        <BackButton to={`/employees/${id}`} label="Back to Employee" />
+
         {!loading && !error && employee && (
           <>
-            <h1 className="text-2xl font-semibold mb-6">Edit Employee</h1>
+            <h1 className="text-2xl font-semibold mb-6 mt-2">Edit Employee</h1>
             <EmployeeForm
               onSubmit={handleSubmit}
               submitLabel="Save"

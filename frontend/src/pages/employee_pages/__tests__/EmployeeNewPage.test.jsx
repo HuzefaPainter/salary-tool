@@ -7,7 +7,8 @@ import {
   typeInField,
   expectToSeeText,
   expectToSeeTextSync,
-  waitForElement
+  waitForElement,
+  expectLinkToPointTo
 } from '@/test/FormHelpers'
 
 vi.mock('@/contexts/AuthContext', () => ({
@@ -53,6 +54,11 @@ describe('EmployeeNewPage', () => {
     it('renders the page title', async () => {
       renderEmployeeNewPage()
       await expectToSeeText(/add employee form/i)
+    })
+
+    it('renders back to employees link', async () => {
+      renderEmployeeNewPage()
+      expectLinkToPointTo(/back to employees/i, '/employees')
     })
 
     it('renders the employee form', () => {
