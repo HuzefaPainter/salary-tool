@@ -1,0 +1,10 @@
+[dotenv] Set [36mDB_USERNAME[0m, [36mDB_PASSWORD[0m
+[dotenv] Loaded [33m.env[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[35mSET search_path TO public /*application='Backend'*/[0m
+  [1m[35m (237.8ms)[0m  [1m[35mCREATE DATABASE "salary_tool_development" ENCODING = 'unicode' /*application='Backend'*/[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[35mSET search_path TO public /*application='Backend'*/[0m
+  [1m[35m (89.2ms)[0m  [1m[35mCREATE DATABASE "salary_tool_test" ENCODING = 'unicode' /*application='Backend'*/[0m
+[dotenv] Set [36mDB_USERNAME[0m, [36mDB_PASSWORD[0m
+[dotenv] Loaded [33m.env[0m
+[dotenv] Set [36mDB_USERNAME[0m, [36mDB_PASSWORD[0m
+[dotenv] Loaded [33m.env[0m

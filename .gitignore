@@ -1,0 +1,8 @@
+# Env files
+**/*.env
+*.env.*
+
+frontend/node_modules/
+backend/tmp/
+
+backend/config/master.key
