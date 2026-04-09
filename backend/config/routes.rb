@@ -13,5 +13,12 @@ Rails.application.routes.draw do
 
   resources :employees
 
+  namespace :insights do
+    get :salary_by_country
+    get :salary_by_job_title
+    get :top_paid_employees
+    get :bottom_paid_employees
+  end
+
   get "/health", to: "health#index"
 end
