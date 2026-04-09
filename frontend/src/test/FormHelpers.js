@@ -46,3 +46,11 @@ export const expectToSeeTextSync = (text) => {
 export const waitForElement = async (fn) => {
   await waitFor(fn, { timeout: DEFAULT_TIMEOUT })
 }
+
+export const expectFieldToHaveValue = (label, value) => {
+  expect(screen.getByLabelText(label)).toHaveValue(value)
+}
+
+export const expectFieldToBeInDocument = (label) => {
+  expect(screen.getByLabelText(label)).toBeInTheDocument()
+}

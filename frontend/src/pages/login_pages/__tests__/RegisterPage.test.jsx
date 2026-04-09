@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter, Routes, Route } from 'react-router-dom'
 import RegisterPage from '@/pages/login_pages/RegisterPage'
-import { typeInField, clickButton, expectToSeeText, waitForElement } from '@/test/FormHelpers'
+import { typeInField, clickButton, expectToSeeText, waitForElement, expectFieldToBeInDocument, expectToSeeRole } from '@/test/FormHelpers'
 
 const mockRegister = vi.fn()
 const mockNavigate = vi.fn()
@@ -45,20 +45,20 @@ describe('RegisterPage', () => {
   describe('rendering', () => {
     it('renders all fields', () => {
       renderRegisterPage()
-      expect(screen.getByLabelText(/name/i)).toBeInTheDocument()
-      expect(screen.getByLabelText(/email/i)).toBeInTheDocument()
-      expect(screen.getByLabelText(/^password$/i)).toBeInTheDocument()
-      expect(screen.getByLabelText(/confirm password/i)).toBeInTheDocument()
+      expectFieldToBeInDocument(/name/i)
+      expectFieldToBeInDocument(/email/i)
+      expectFieldToBeInDocument(/^password$/i)
+      expectFieldToBeInDocument(/confirm password/i)
     })
 
     it('renders a submit button', () => {
       renderRegisterPage()
-      expect(screen.getByRole('button', { name: /register/i })).toBeInTheDocument()
+      expectToSeeRole('button', /register/i)
     })
 
     it('renders a link to login page', () => {
       renderRegisterPage()
-      expect(screen.getByRole('link', { name: /login/i })).toBeInTheDocument()
+      expectToSeeRole('link', /login/i)
     })
   })
 

@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter, Routes, Route } from 'react-router-dom'
 import LoginPage from '@/pages/login_pages/LoginPage'
-import { typeInField, clickButton, expectToSeeText, waitForElement } from '@/test/FormHelpers'
+import { typeInField, clickButton, expectToSeeText, waitForElement, expectFieldToBeInDocument, expectToSeeRole } from '@/test/FormHelpers'
 
 const mockLogin = vi.fn()
 const mockNavigate = vi.fn()
@@ -38,18 +38,18 @@ describe('LoginPage', () => {
   describe('rendering', () => {
     it('renders email and password fields', () => {
       renderLoginPage()
-      expect(screen.getByLabelText(/email/i)).toBeInTheDocument()
-      expect(screen.getByLabelText(/^password$/i)).toBeInTheDocument()
+      expectFieldToBeInDocument(/email/i)
+      expectFieldToBeInDocument(/^password$/i)
     })
 
     it('renders a submit button', () => {
       renderLoginPage()
-      expect(screen.getByRole('button', { name: /login/i })).toBeInTheDocument()
+      expect('button', /login/i)
     })
 
     it('renders a link to register page', () => {
       renderLoginPage()
-      expect(screen.getByRole('link', { name: /register/i })).toBeInTheDocument()
+      expectToSeeRole('link', /register/i)
     })
   })
 
@@ -110,7 +110,7 @@ describe('LoginPage', () => {
       renderLoginPage()
       await fillLoginForm()
       await clickButton(/login/i)
-      expect(screen.getByRole('button', { name: /logging in/i })).toBeDisabled()
+      expectToSeeRole('button', /logging in/i)
     })
   })
 })
