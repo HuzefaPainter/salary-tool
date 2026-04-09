@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { getEmployee, updateEmployee } from '@/api/services/employeeService'
+import { toast } from 'sonner'
 import Navbar from '@/components/Navbar'
 import EmployeeForm from '@/components/EmployeeForm'
 
@@ -29,6 +30,7 @@ export default function EmployeeEditPage() {
 
   const handleSubmit = async (data) => {
     await updateEmployee(parseInt(id), data)
+    toast.success('Employee updated successfully')
     navigate(`/employees/${id}`)
   }
 

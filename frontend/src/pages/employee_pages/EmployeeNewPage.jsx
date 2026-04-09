@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { createEmployee } from '@/api/services/employeeService'
+import { toast } from 'sonner'
 import Navbar from '@/components/Navbar'
 import EmployeeForm from '@/components/EmployeeForm'
 
@@ -8,6 +9,7 @@ export default function EmployeeNewPage() {
 
   const handleSubmit = async (data) => {
     const response = await createEmployee(data)
+    toast.success('Employee created successfully')
     navigate(`/employees/${response.data.id}`)
   }
 

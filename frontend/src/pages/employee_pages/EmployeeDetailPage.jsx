@@ -4,6 +4,7 @@ import { getEmployee, deleteEmployee } from '@/api/services/employeeService'
 import Navbar from '@/components/Navbar'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { toast } from 'sonner'
 import { formatSalary } from '@/utils/formatSalary'
 import {
   AlertDialog,
@@ -45,8 +46,10 @@ export default function EmployeeDetailPage() {
     setDeleteError(null)
     try {
       await deleteEmployee(parseInt(id))
+      toast.success('Employee deleted successfully')
       navigate('/employees')
     } catch {
+      toast.success('Failed to delete employee')
       setDeleteError('Failed to delete employee')
     }
   }
