@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/table'
 
 const formatSalary = (salary) => {
+  if (!salary) return 'N/A'
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -109,11 +110,11 @@ export default function EmployeesPage() {
               <TableBody>
                 {employees.map((employee) => (
                   <TableRow key={employee.id}>
-                    <TableCell>{employee.first_name}</TableCell>
-                    <TableCell>{employee.last_name}</TableCell>
-                    <TableCell>{employee.email}</TableCell>
-                    <TableCell>{employee.country}</TableCell>
-                    <TableCell>{employee.job_title}</TableCell>
+                    <TableCell>{employee.first_name || 'N/A'}</TableCell>
+                    <TableCell>{employee.last_name || 'N/A'}</TableCell>
+                    <TableCell>{employee.email || 'N/A'}</TableCell>
+                    <TableCell>{employee.country || 'N/A'}</TableCell>
+                    <TableCell>{employee.job_title || 'N/A'}</TableCell>
                     <TableCell>{formatSalary(employee.salary)}</TableCell>
                     <TableCell>
                       <Link

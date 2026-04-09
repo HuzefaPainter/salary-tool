@@ -97,6 +97,21 @@ describe('EmployeesPage', () => {
       })
     })
 
+    it('renders N/A for missing employee fields', async () => {
+      employeeService.getEmployees.mockResolvedValue({
+        data: {
+          employees: [
+            { id: 3, first_name: null, last_name: null, email: null, country: null, job_title: null, salary: null }
+          ],
+          meta: mockMeta
+        }
+      })
+      renderEmployeesPage()
+      await waitForElement(() => {
+        expect(screen.getAllByText('N/A').length).toBeGreaterThanOrEqual(5)
+      })
+    })
+
     it('renders a view link for each employee', async () => {
       renderEmployeesPage()
       await waitForElement(() => {
