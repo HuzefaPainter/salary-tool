@@ -40,26 +40,32 @@ RSpec.describe Employee, type: :model do
 
   describe ".top_paid_employees" do
     it "returns top 10 highest paid employees in descending order" do
-      create_list(:employee, 15, salary: 50000)
-      top = create_list(:employee, 8, salary: 500000)
+      create_list(:employee, 5, salary: 30000)
+      create_list(:employee, 5, salary: 100000)
+      create_list(:employee, 5, salary: 300000)
+      create_list(:employee, 5, salary: 500000)
 
       result = Employee.top_paid_employees
 
       expect(result.length).to eq(10)
-      expect(result.map(&:salary).map(&:to_f)).to all(eq(500000.0))
+      expect(result.first.salary.to_f).to eq(500000.0)
+      expect(result.last.salary.to_f).to eq(300000.0)
       expect(result.first.salary.to_f).to be >= result.last.salary.to_f
     end
   end
 
   describe ".bottom_paid_employees" do
     it "returns bottom 10 lowest paid employees in ascending order" do
-      create_list(:employee, 15, salary: 500000)
-      bottom = create_list(:employee, 8, salary: 30000)
+      create_list(:employee, 5, salary: 500000)
+      create_list(:employee, 5, salary: 300000)
+      create_list(:employee, 5, salary: 100000)
+      create_list(:employee, 5, salary: 30000)
 
       result = Employee.bottom_paid_employees
 
       expect(result.length).to eq(10)
-      expect(result.map(&:salary).map(&:to_f)).to all(eq(30000.0))
+      expect(result.first.salary.to_f).to eq(30000.0)
+      expect(result.last.salary.to_f).to eq(100000.0)
       expect(result.first.salary.to_f).to be <= result.last.salary.to_f
     end
   end
