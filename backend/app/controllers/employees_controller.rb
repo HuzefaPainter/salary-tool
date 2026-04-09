@@ -1,5 +1,5 @@
 class EmployeesController < ApplicationController
-  before_action :set_employee, only: [ :show ]
+  before_action :set_employee, only: [ :show, :update ]
 
   def index
     @employees = Employee.page(params[:page]).per(10)
@@ -22,6 +22,14 @@ class EmployeesController < ApplicationController
     @employee = Employee.new(employee_params)
     if @employee.save
       render json: @employee, status: :created
+    else
+      render json: { errors: @employee.errors.full_messages }, status: :unprocessable_content
+    end
+  end
+
+  def update
+    if @employee.update(employee_params)
+      render json: @employee, status: :ok
     else
       render json: { errors: @employee.errors.full_messages }, status: :unprocessable_content
     end

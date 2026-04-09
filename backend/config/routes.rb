@@ -11,7 +11,7 @@ Rails.application.routes.draw do
       registrations: "users/registrations"
     }
 
-  resources :employees, only: [ :index, :show, :create ]
+  resources :employees, only: [ :index, :show, :create, :update ]
 
   get "/health", to: "health#index"
 end

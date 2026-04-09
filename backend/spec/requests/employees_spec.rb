@@ -62,6 +62,8 @@ RSpec.describe "Employees", type: :request do
     end
   end
 
+  # TODO: Refactor create and update to maybe do both in 1 test since no fields such that we don't allow them to be changed.
+
   describe "POST /employees" do
     let(:valid_params) do
       {
@@ -117,6 +119,62 @@ RSpec.describe "Employees", type: :request do
     context "when unauthenticated" do
       it "returns 401" do
         post "/employees", params: valid_params, as: :json
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+  end
+
+  describe "PUT /employees/:id" do
+    let!(:employee) { create(:employee) }
+    let(:valid_params) do
+      { employee: { first_name: "Updated", salary: 999999 } }
+    end
+
+    context "when authenticated" do
+      it "updates the employee" do
+        put "/employees/#{employee.id}", params: valid_params, headers: auth_headers(user), as: :json
+        expect(response).to have_http_status(:ok)
+        expect(json["first_name"]).to eq("Updated")
+        expect(json["salary"]).to eq("999999.0")
+      end
+
+      [
+        [ :email,      "Email can't be blank" ],
+        [ :first_name, "First name can't be blank" ],
+        [ :last_name,  "Last name can't be blank" ],
+        [ :country,    "Country can't be blank" ],
+        [ :job_title,  "Job title can't be blank" ],
+        [ :salary,     "Salary can't be blank" ]
+      ].each do |field, error_message|
+          it "returns 422 when #{field} is set to blank" do
+            put "/employees/#{employee.id}", params: { employee: { field => "" } }, headers: auth_headers(user), as: :json
+            expect(response).to have_http_status(:unprocessable_content)
+            expect(json["errors"]).to include(error_message)
+          end
+        end
+
+      it "returns 422 when salary is negative" do
+        put "/employees/#{employee.id}", params: { employee: { salary: -1 } }, headers: auth_headers(user), as: :json
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(json["errors"]).to include("Salary must be greater than 0")
+      end
+
+      it "returns 422 when email is already taken" do
+        other = create(:employee)
+        put "/employees/#{employee.id}", params: { employee: { email: other.email } }, headers: auth_headers(user), as: :json
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(json["errors"]).to include("Email has already been taken")
+      end
+
+      it "returns 404 for non-existent employee" do
+        put "/employees/99999", params: valid_params, headers: auth_headers(user), as: :json
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+
+    context "when unauthenticated" do
+      it "returns 401" do
+        put "/employees/#{employee.id}", params: valid_params, as: :json
         expect(response).to have_http_status(:unauthorized)
       end
     end
