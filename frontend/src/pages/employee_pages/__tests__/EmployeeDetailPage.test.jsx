@@ -110,7 +110,11 @@ describe('EmployeeDetailPage', () => {
       renderEmployeeDetailPage()
       await waitForElement(() => expectToSeeRole('button', /delete/i))
       await clickButton(/delete/i)
-      await waitForElement(() => expect(employeeService.deleteEmployee).toHaveBeenCalledWith(1))
+      // confirm in dialog
+      await clickButton(/delete/i)
+      await waitFor(() => {
+        expect(employeeService.deleteEmployee).toHaveBeenCalledWith(1)
+      }, { timeout: 500 })
     })
 
     it('redirects to /employees after successful delete', async () => {
@@ -118,7 +122,10 @@ describe('EmployeeDetailPage', () => {
       renderEmployeeDetailPage()
       await waitForElement(() => expectToSeeRole('button', /delete/i))
       await clickButton(/delete/i)
-      await waitForElement(() => expect(mockNavigate).toHaveBeenCalledWith('/employees'))
+      await clickButton(/delete/i)
+      await waitFor(() => {
+        expect(mockNavigate).toHaveBeenCalledWith('/employees')
+      }, { timeout: 500 })
     })
 
     it('shows error message when delete fails', async () => {
@@ -127,6 +134,7 @@ describe('EmployeeDetailPage', () => {
       employeeService.deleteEmployee.mockRejectedValue(error)
       renderEmployeeDetailPage()
       await waitForElement(() => expectToSeeRole('button', /delete/i))
+      await clickButton(/delete/i)
       await clickButton(/delete/i)
       await waitForElement(() => expectToSeeTextSync(/failed to delete employee/i))
     })

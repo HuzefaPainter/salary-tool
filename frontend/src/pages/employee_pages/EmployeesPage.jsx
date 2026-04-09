@@ -12,14 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-
-const formatSalary = (salary) => {
-  if (!salary) return 'N/A'
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(parseFloat(salary))
-}
+import { formatSalary } from '@/utils/formatSalary'
 
 const useDebounce = (value, delay) => {
   const [debouncedValue, setDebouncedValue] = useState(value)
