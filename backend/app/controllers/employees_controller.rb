@@ -2,7 +2,7 @@ class EmployeesController < ApplicationController
   before_action :set_employee, only: [ :show, :update, :destroy ]
 
   def index
-    @employees = Employee.page(params[:page]).per(10)
+    @employees = Employee.search(params[:search]).page(params[:page]).per(10)
     render json: {
       employees: @employees,
       meta: {

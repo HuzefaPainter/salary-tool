@@ -6,6 +6,11 @@ class Employee < ApplicationRecord
   validates :job_title, presence: true
   validates :salary, presence: true, numericality: { greater_than: 0 }
 
+  scope :search, ->(term) {
+    return all if term.blank?
+    where("first_name ILIKE :term OR last_name ILIKE :term OR email ILIKE :term", term: "%#{term}%")
+  }
+
   def self.salary_insights_by_country
     select("country, AVG(salary) as average_salary, MIN(salary) as min_salary, MAX(salary) as max_salary, COUNT(*) as employee_count")
       .group(:country)
