@@ -1,14 +1,26 @@
 Devise.setup do |config|
-  # config.secret_key = 'aed3001295a05a1d25eec8ce0b663e571839e12105e82fc93d9de020d808791b228e2d606e6c1d91d1ca23fcdc5e5724844d01d9d01a1208e1c3e2f47f30792c'
   config.mailer_sender = "please-change-me-at-config-initializers-devise@example.com"
 
   require "devise/orm/active_record"
+
+  config.navigational_formats = []
+  config.jwt do |jwt|
+    jwt.secret = ENV["DEVISE_JWT_SECRET_KEY"]
+    jwt.dispatch_requests = [
+      [ "POST", %r{^/users/sign_in$} ],
+      [ "POST", %r{^/users/sign_up$} ]
+    ]
+    jwt.revocation_requests = [
+      [ "DELETE", %r{^/users/sign_out$} ]
+    ]
+    jwt.expiration_time = 24.hours.to_i
+  end
 
   config.case_insensitive_keys = [ :email ]
 
   config.strip_whitespace_keys = [ :email ]
 
-  config.skip_session_storage = [:http_auth]
+  config.skip_session_storage = [ :http_auth, :params_auth ]
   config.stretches = Rails.env.test? ? 1 : 12
 
   config.reconfirmable = true
@@ -25,4 +37,8 @@ Devise.setup do |config|
 
   config.responder.error_status = :unprocessable_content
   config.responder.redirect_status = :see_other
+
+  config.warden do |manager|
+    manager.default_strategies(scope: :user).unshift :jwt
+  end
 end
