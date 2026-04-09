@@ -22,3 +22,5 @@ Using shared_examples throughout the tests where ideal to shorten test sizes and
 Frontend:
 
 Refactoring and testing reused components makes testing easier. I also refactored quite a few of the most used actions in tests to make it more readable and in turn more straightforward to understand
+
+Making my own waitFor in tests with a reduced timeout improves test speeds.

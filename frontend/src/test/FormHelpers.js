@@ -1,5 +1,7 @@
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
+const DEFAULT_TIMEOUT = 200
 
 export const typeInField = async (label, value) => {
   await userEvent.type(screen.getByLabelText(label), value)
@@ -39,4 +41,8 @@ export const expectLinkToPointTo = (name, href) => {
 
 export const expectToSeeTextSync = (text) => {
   expect(screen.getByText(text)).toBeInTheDocument()
+}
+
+export const waitForElement = async (fn) => {
+  await waitFor(fn, { timeout: DEFAULT_TIMEOUT })
 }

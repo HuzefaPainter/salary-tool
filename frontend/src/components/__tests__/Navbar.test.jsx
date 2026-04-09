@@ -1,12 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, waitFor, act } from '@testing-library/react'
+import { render, screen, act } from '@testing-library/react'
 import { MemoryRouter, Routes, Route } from 'react-router-dom'
 import Navbar from '@/components/Navbar'
 import {
 clickButton,
 expectToSeeRole,
 expectLinkToPointTo,
-expectToSeeTextSync
+expectToSeeTextSync,
+waitForElement
 } from '@/test/FormHelpers'
 
 const mockLogout = vi.fn()
@@ -87,7 +88,7 @@ describe('Navbar', () => {
       mockLogout.mockResolvedValue({})
       renderNavbar()
       await clickButton(/logout/i)
-      await waitFor(() => {
+      await waitForElement(() => {
         expect(mockLogout).toHaveBeenCalled()
       })
     })
@@ -96,7 +97,7 @@ describe('Navbar', () => {
       mockLogout.mockResolvedValue({})
       renderNavbar()
       await clickButton(/logout/i)
-      await waitFor(() => {
+      await waitForElement(() => {
         expect(mockNavigate).toHaveBeenCalledWith('/login')
       })
     })

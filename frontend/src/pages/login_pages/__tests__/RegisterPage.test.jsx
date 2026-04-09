@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { MemoryRouter, Routes, Route } from 'react-router-dom'
 import RegisterPage from '@/pages/login_pages/RegisterPage'
-import { typeInField, clickButton, expectToSeeText } from '@/test/FormHelpers'
+import { typeInField, clickButton, expectToSeeText, waitForElement } from '@/test/FormHelpers'
 
 const mockRegister = vi.fn()
 const mockNavigate = vi.fn()
@@ -100,7 +100,7 @@ describe('RegisterPage', () => {
       renderRegisterPage()
       await fillRegisterForm()
       await clickButton(/register/i)
-      await waitFor(() => {
+      await waitForElement(() => {
         expect(mockRegister).toHaveBeenCalledWith('John Doe', 'john@example.com', 'password123', 'password123')
       })
     })
@@ -110,7 +110,7 @@ describe('RegisterPage', () => {
       renderRegisterPage()
       await fillRegisterForm()
       await clickButton(/register/i)
-      await waitFor(() => {
+      await waitForElement(() => {
         expect(mockNavigate).toHaveBeenCalledWith('/employees')
       })
     })
