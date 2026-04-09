@@ -21,4 +21,5 @@ Rails.application.routes.draw do
   end
 
   get "/health", to: "health#index"
+  post "/admin/reset_data", to: "admin#reset_data"
 end

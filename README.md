@@ -6,6 +6,8 @@ Steps to run tests:
 cd backend && bundle exec rspec --format documentation
 cd frontend && npm test
 
+You can choose to reset data after logging in if required. This will automatically populate the db the same as running db:seed in console.
+
 ---
 
 General Technical Points to note:
