@@ -1,6 +1,8 @@
 # Env/secrets files
 **/*.env
-*.env.*
+*.env.local
+*.env.production
+*.env.development
 backend/config/master.key
 backend/config/credentials.yml.enc
 
