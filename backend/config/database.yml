@@ -15,5 +15,5 @@ test:
   database: salary_tool_test
 
 production:
-  <<: *default
-  database: salary_tool_production
+  url: <%= ENV["DATABASE_URL"] %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
