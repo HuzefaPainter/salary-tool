@@ -1,3 +1,7 @@
+Live urls:
+First go to https://salary-tool.onrender.com to start the server since this is a render free tier, it sleeps the server when idle
+Then go to https://salary-tool-react.onrender.com to use the appliation
+
 Steps to run:
 backend/  : bundle install, env vars, db:create, db:migrate, db:seed, rails server or bin/dev
 frontend/ : npm install, npm run dev
